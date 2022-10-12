@@ -10,21 +10,28 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.view.WindowCompat
+import androidx.lifecycle.LifecycleOwner
+import com.liyaqing.mycompose.TheaterApplication
 import com.liyaqing.mycompose.home.ui.theme.HomeNavigation
 import com.liyaqing.mycompose.home.ui.theme.HomeScreen
 import com.liyaqing.mycompose.home.ui.theme.MyComposeTheme
 
-class HomeActivity : ComponentActivity() {
+class HomeActivity : ComponentActivity(), LifecycleOwner {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            WindowCompat.setDecorFitsSystemWindows(window, true)
+//            val appContainer = (application as TheaterApplication).container
+
             MyComposeTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    HomeScreen()
+                    HomeScreen(this)
                 }
             }
         }

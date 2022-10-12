@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -19,6 +20,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.liyaqing.mycompose.R
+import com.liyaqing.mycompose.home.data.SmallTheaterViewModel
+import com.liyaqing.mycompose.home.data.bean.SmallTheaterBeanList
 import com.liyaqing.mycompose.home.ui.screen.GoTheaterScreen
 import com.liyaqing.mycompose.home.ui.screen.MineScreen
 import com.liyaqing.mycompose.home.ui.screen.SmallTheaterScreen
@@ -29,8 +32,8 @@ import com.liyaqing.mycompose.home.ui.screen.SmallTheaterScreen
  * @Description:
  */
 object RouteUrl {
-    const val GoTheater: String = "GoTheater";
     const val SmallTheater: String = "SmallTheater";
+    const val GoTheater: String = "GoTheater";
     const val Mine: String = "Mine";
 }
 
@@ -40,18 +43,19 @@ sealed class BottomBarBean(
     @DrawableRes val selectIconUrl: Int,
     @DrawableRes val unSelectIconUrl: Int
 ) {
-    object GoTheater : BottomBarBean(
-        RouteUrl.GoTheater,
-        "追剧",
-        R.drawable.icon_go_theater_select,
-        R.drawable.icon_go_theater_unselect
-    );
     object SmallTheater : BottomBarBean(
         RouteUrl.SmallTheater,
         "小剧场",
         R.drawable.icon_small_theater_select,
         R.drawable.icon_small_theater_unselect
     );
+    object GoTheater : BottomBarBean(
+        RouteUrl.GoTheater,
+        "追剧",
+        R.drawable.icon_go_theater_select,
+        R.drawable.icon_go_theater_unselect
+    );
+
     object Mine : BottomBarBean(
         RouteUrl.Mine,
         "我的",
@@ -61,30 +65,30 @@ sealed class BottomBarBean(
 }
 
 @Composable
-fun HomeNavigation() {
+fun HomeNavigation(mOwner: LifecycleOwner, viewModel: SmallTheaterViewModel) {
     val navController = rememberNavController()
     val items = listOf(
-        BottomBarBean.GoTheater,
         BottomBarBean.SmallTheater,
+        BottomBarBean.GoTheater,
         BottomBarBean.Mine,
     )
     var selectIndex by remember { mutableStateOf(0) }
-
 
     Scaffold(
         bottomBar = {
             BottomNavigation {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination
-                for (i in items.indices) {
-                    var screen: BottomBarBean = items.get(i);
+                items.forEach(){screen->
+//                    var screen: BottomBarBean = items.get(i);
                     BottomNavigationItem(
                         modifier = Modifier.background(Color.White),
                         icon = {
+//                            Log.d("qing==index", "$selectIndex == $i");
+
                             Icon(
                                 painter = painterResource(
-                                    id = if (selectIndex == i) screen.selectIconUrl
-                                    else screen.unSelectIconUrl
+                                    id = screen.selectIconUrl
                                 ),
                                 contentDescription = null,
                                 modifier = Modifier.size(24.dp, 24.dp)
@@ -93,8 +97,8 @@ fun HomeNavigation() {
                         label = {
                             Text(
                                 text = screen.iconName,
-                                color = if (selectIndex == i) colorResource(id = R.color.color_FFB13E)
-                                else colorResource(id = R.color.color_332823)
+//                                color = if (selectIndex == i) colorResource(id = R.color.color_FFB13E)
+//                                else colorResource(id = R.color.color_332823)
                             )
                         },
                         selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
@@ -102,8 +106,8 @@ fun HomeNavigation() {
                         unselectedContentColor = colorResource(id = R.color.color_332823),
                         onClick = {
                             //不判断会报导航报错
-                            if(selectIndex==i) return@BottomNavigationItem
-                            selectIndex = i;
+//                            if (selectIndex == items.) return@BottomNavigationItem
+//                            selectIndex = i;
                             navController.navigate(screen.route) {
                                 // Pop up to the start destination of the graph to
                                 // avoid building up a large stack of destinations
@@ -125,12 +129,25 @@ fun HomeNavigation() {
     ) { innerPadding ->
         NavHost(
             navController,
-            startDestination = RouteUrl.GoTheater,
+            startDestination = RouteUrl.SmallTheater,
             Modifier.padding(innerPadding)
         ) {
-            composable(RouteUrl.GoTheater) { GoTheaterScreen(navController) }
-            composable(RouteUrl.SmallTheater) { SmallTheaterScreen(navController) }
-            composable(RouteUrl.Mine) { MineScreen(navController) }
+
+            composable(RouteUrl.SmallTheater) {
+                Log.d("qing==v0","==")
+                SmallTheaterScreen(
+                    navController, mOwner,
+                    viewModel
+                )
+            }
+            composable(RouteUrl.GoTheater) {
+                Log.d("qing==v1","=====")
+
+                GoTheaterScreen(navController, mOwner) }
+            composable(RouteUrl.Mine) {
+                Log.d("qing==v2","=====")
+
+                MineScreen(navController, mOwner) }
         }
     }
 }

@@ -2,6 +2,13 @@ buildscript {
     ext {
         compose_version = '1.1.1'
         composeNavigationVersion = '2.5.0'
+        accompanist_pager = '0.18.0'
+        hilt_version= '2.38.1'
+        coil_version= '1.4.0'
+    }
+    dependencies {
+//        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
@@ -12,4 +19,5 @@ plugins {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+
 }

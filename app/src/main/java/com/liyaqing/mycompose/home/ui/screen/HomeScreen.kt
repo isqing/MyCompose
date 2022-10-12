@@ -1,6 +1,9 @@
 package com.liyaqing.mycompose.home.ui.theme
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.liyaqing.mycompose.home.data.SmallTheaterViewModel
 
 /**
  * @Author: liyaqing
@@ -8,6 +11,9 @@ import androidx.compose.runtime.Composable
  * @Description:
  */
 @Composable
-fun HomeScreen() {
-     HomeNavigation() ;
+fun HomeScreen(
+    mOwner: LifecycleOwner,
+    viewModel: SmallTheaterViewModel = viewModel()
+) {
+    HomeNavigation(mOwner,viewModel);
 }
