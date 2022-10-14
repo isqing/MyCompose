@@ -20,7 +20,7 @@ import androidx.navigation.NavController
  * @Description:
  */
 @Composable
-fun GoTheaterScreen(navController:NavController,mOwner: LifecycleOwner){
+fun GoTheaterScreen(){
     Row(
        modifier = Modifier.fillMaxSize().padding(100.dp),
         verticalAlignment = Alignment.Top, // 垂直居中

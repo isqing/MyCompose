@@ -4,12 +4,14 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import com.liyaqing.mycompose.home.data.SmallTheaterViewModel
@@ -24,8 +26,6 @@ import com.liyaqing.mycompose.home.ui.banner.BannerScreen
  */
 @Composable
 fun SmallTheaterScreen(
-    navController: NavController,
-    mOwner: LifecycleOwner,
     viewModel: SmallTheaterViewModel,
 
     ) {
@@ -40,8 +40,10 @@ fun SmallTheaterScreen(
         banners?.let {
             BannerShow(banners = banners)
         }
-        HotSmallTheaterScreenShow(hot = hot)
 
+        hot?.let {
+            HotSmallTheaterScreenShow(hot = hot)
+        }
     }
 
 
@@ -51,9 +53,9 @@ fun SmallTheaterScreen(
 private fun BannerShow(
     banners: List<SmallTheaterBean>,
     indicatorAlignment: Alignment = Alignment.BottomCenter,
-    ) {
+) {
     Column() {
-        BannerScreen(banners,indicatorAlignment)
+        BannerScreen(banners, indicatorAlignment)
     }
 }
 
@@ -66,7 +68,7 @@ private fun HotSmallTheaterScreenShow(
         Log.d("qing==", "SmallTheaterScreenshow: " + hot?.title)
         val title: String? = hot?.title;
         Text(
-            text = "ppp$title", modifier = Modifier.background(Color.Green)
+            text = "ppp$title", modifier = Modifier.background(Color.Green).offset(x=50.dp)
         )
     }
 }

@@ -12,8 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.LifecycleOwner
-import com.liyaqing.mycompose.TheaterApplication
-import com.liyaqing.mycompose.home.ui.theme.HomeNavigation
 import com.liyaqing.mycompose.home.ui.theme.HomeScreen
 import com.liyaqing.mycompose.home.ui.theme.MyComposeTheme
 

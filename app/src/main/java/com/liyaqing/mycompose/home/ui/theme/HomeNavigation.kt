@@ -1,5 +1,6 @@
 package com.liyaqing.mycompose.home.ui.theme
 
+import android.text.TextUtils
 import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
@@ -13,6 +14,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -21,7 +23,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.liyaqing.mycompose.R
 import com.liyaqing.mycompose.home.data.SmallTheaterViewModel
-import com.liyaqing.mycompose.home.data.bean.SmallTheaterBeanList
 import com.liyaqing.mycompose.home.ui.screen.GoTheaterScreen
 import com.liyaqing.mycompose.home.ui.screen.MineScreen
 import com.liyaqing.mycompose.home.ui.screen.SmallTheaterScreen
@@ -65,22 +66,25 @@ sealed class BottomBarBean(
 }
 
 @Composable
-fun HomeNavigation(mOwner: LifecycleOwner, viewModel: SmallTheaterViewModel) {
+fun HomeNavigation(
+    mOwner: LifecycleOwner,
+    viewModel: SmallTheaterViewModel = viewModel()
+) {
     val navController = rememberNavController()
     val items = listOf(
         BottomBarBean.SmallTheater,
         BottomBarBean.GoTheater,
         BottomBarBean.Mine,
     )
-    var selectIndex by remember { mutableStateOf(0) }
+    var currentRoute by remember { mutableStateOf(RouteUrl.SmallTheater) }
 
     Scaffold(
         bottomBar = {
             BottomNavigation {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination
-                items.forEach(){screen->
-//                    var screen: BottomBarBean = items.get(i);
+                for (i in items.indices) {
+                    var screen: BottomBarBean = items.get(i);
                     BottomNavigationItem(
                         modifier = Modifier.background(Color.White),
                         icon = {
@@ -107,7 +111,7 @@ fun HomeNavigation(mOwner: LifecycleOwner, viewModel: SmallTheaterViewModel) {
                         onClick = {
                             //不判断会报导航报错
 //                            if (selectIndex == items.) return@BottomNavigationItem
-//                            selectIndex = i;
+                            currentRoute = screen.route;
                             navController.navigate(screen.route) {
                                 // Pop up to the start destination of the graph to
                                 // avoid building up a large stack of destinations
@@ -134,20 +138,39 @@ fun HomeNavigation(mOwner: LifecycleOwner, viewModel: SmallTheaterViewModel) {
         ) {
 
             composable(RouteUrl.SmallTheater) {
-                Log.d("qing==v0","==")
+                if (!TextUtils.equals(
+                        currentRoute,
+                        RouteUrl.SmallTheater
+                    )
+                ) return@composable
+                Log.d("qing==v0", "==$currentRoute")
                 SmallTheaterScreen(
-                    navController, mOwner,
                     viewModel
                 )
             }
+
+
             composable(RouteUrl.GoTheater) {
-                Log.d("qing==v1","=====")
+                if (!TextUtils.equals(
+                        currentRoute,
+                        RouteUrl.GoTheater
+                    )
+                ) return@composable
+                Log.d("qing==v1", "=====$currentRoute")
+                GoTheaterScreen()
+            }
 
-                GoTheaterScreen(navController, mOwner) }
+
             composable(RouteUrl.Mine) {
-                Log.d("qing==v2","=====")
+                if (!TextUtils.equals(
+                        currentRoute,
+                        RouteUrl.Mine
+                    )
+                ) return@composable
+                Log.d("qing==v2", "=====")
+                MineScreen()
+            }
 
-                MineScreen(navController, mOwner) }
         }
     }
 }

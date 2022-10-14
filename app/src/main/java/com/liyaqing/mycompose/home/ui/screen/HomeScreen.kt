@@ -13,7 +13,6 @@ import com.liyaqing.mycompose.home.data.SmallTheaterViewModel
 @Composable
 fun HomeScreen(
     mOwner: LifecycleOwner,
-    viewModel: SmallTheaterViewModel = viewModel()
 ) {
-    HomeNavigation(mOwner,viewModel);
+    HomeNavigation(mOwner);
 }

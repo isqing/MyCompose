@@ -12,7 +12,7 @@ import androidx.navigation.NavController
  * @Description:
  */
 @Composable
-fun MineScreen(navController:NavController,mOwner: LifecycleOwner){
+fun MineScreen(){
     Column() {
         Text(text = "Mine")
     }
