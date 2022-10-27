@@ -23,10 +23,10 @@ class Network {
         private val interceptor = Interceptor { chain ->
             val request = chain.request()
             val requestBuilder = request.newBuilder()
-            val url = request.url()
+            val url = request.url
             val builder = url.newBuilder()
             requestBuilder.url(builder.build())
-                .method(request.method(), request.body())
+                .method(request.method, request.body)
 //                .addHeader("clientType", "Android")
 //                .addHeader("Content-Type", "application/json;charset=UTF-8")
             chain.proceed(requestBuilder.build())

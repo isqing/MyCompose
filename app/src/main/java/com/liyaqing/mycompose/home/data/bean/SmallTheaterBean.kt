@@ -22,6 +22,16 @@ data class SmallTheaterBean(
 
 )
 data class SmallTheaterBeanList(
-    val list: List<SmallTheaterBean>,
+    val list: List<TheaterNodeItemBean>,
     val title: String,
+)
+    data class TheaterNodeItemBean(
+    val cover: String,
+    val cover_height: Int,
+    val cover_width: Int,
+    val episode_num: Int,
+    val id: Int,
+    val title: String,
+    val update_status: Int,
+    val update_text: String
 )

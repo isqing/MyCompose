@@ -77,6 +77,7 @@ fun HomeNavigation(
         BottomBarBean.Mine,
     )
     var currentRoute by remember { mutableStateOf(RouteUrl.SmallTheater) }
+    var selectIndex by remember { mutableStateOf(0) }
 
     Scaffold(
         bottomBar = {
@@ -92,7 +93,8 @@ fun HomeNavigation(
 
                             Icon(
                                 painter = painterResource(
-                                    id = screen.selectIconUrl
+//                                    id = if (selectIndex == i)  screen.selectIconUrl
+                                     screen.unSelectIconUrl
                                 ),
                                 contentDescription = null,
                                 modifier = Modifier.size(24.dp, 24.dp)
@@ -101,8 +103,8 @@ fun HomeNavigation(
                         label = {
                             Text(
                                 text = screen.iconName,
-//                                color = if (selectIndex == i) colorResource(id = R.color.color_FFB13E)
-//                                else colorResource(id = R.color.color_332823)
+                                color = if (selectIndex == i) colorResource(id = R.color.color_FFB13E)
+                                else colorResource(id = R.color.color_332823)
                             )
                         },
                         selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
@@ -110,6 +112,7 @@ fun HomeNavigation(
                         unselectedContentColor = colorResource(id = R.color.color_332823),
                         onClick = {
                             //不判断会报导航报错
+                            selectIndex=i;
 //                            if (selectIndex == items.) return@BottomNavigationItem
                             currentRoute = screen.route;
                             navController.navigate(screen.route) {

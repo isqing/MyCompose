@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -90,11 +91,12 @@ fun BannerScreen(
 //            .clickable(onClick = { onClick(list[pagerState.currentPage].linkUrl) })
             .fillMaxWidth()
             .height(150.dp)
-            .padding(16.dp, 5.dp, 16.dp, 0.dp),
+            .padding(20.dp, 5.dp, 20.dp, 0.dp),
 
         ) { page ->
-        Image(
-            painter = rememberImagePainter(banners[page].cover),
+        AsyncImage(
+            model=banners[page].cover,
+//            painter = rememberImagePainter(banners[page].cover),
             modifier = Modifier
                 .fillMaxSize()
                 .clip(shape = RoundedCornerShape(10.dp)),
