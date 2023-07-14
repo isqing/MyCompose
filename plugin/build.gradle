@@ -1,0 +1,34 @@
+plugins {
+    id 'groovy'
+}
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+}
+
+sourceSets {
+    main {
+        groovy {
+            srcDir 'src/main/groovy'
+        }
+
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+}
+group='com.liyaqing.ams'
+version = '1.0.0'
+publishing {
+    repositories {
+        maven {
+//            //设置插件的GAV参数
+//            pom.groupId = 'com.liyaqing.ams'
+//            pom.artifactId = 'AmsPlugin'
+//            pom.version = '1.0.0'
+            //文件发布到下面目录
+           url= uri('../maven_repo')
+        }
+    }
+}

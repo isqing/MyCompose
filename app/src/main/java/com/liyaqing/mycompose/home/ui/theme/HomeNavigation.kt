@@ -146,7 +146,6 @@ fun HomeNavigation(
                         RouteUrl.SmallTheater
                     )
                 ) return@composable
-                Log.d("qing==v0", "==$currentRoute")
                 SmallTheaterScreen(
                     viewModel
                 )

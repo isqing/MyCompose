@@ -3,11 +3,9 @@ package com.liyaqing.mycompose.home.ui.screen
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
@@ -25,6 +23,7 @@ import com.liyaqing.mycompose.home.data.SmallTheaterViewModel
 import com.liyaqing.mycompose.home.data.bean.SmallTheaterBean
 import com.liyaqing.mycompose.home.data.bean.SmallTheaterBeanList
 import com.liyaqing.mycompose.home.ui.banner.BannerScreen
+import com.liyaqing.mycompose.home.ui.title.Titleview
 
 /**
  * @Author: liyaqing
@@ -43,6 +42,7 @@ fun SmallTheaterScreen(
             .fillMaxSize()
 
     ) {
+
         banners?.let {
             BannerShow(banners = banners)
         }
@@ -75,19 +75,7 @@ private fun HotSmallTheaterScreenShow(
         Log.d("qing==", "SmallTheaterScreenshow: " + hot?.title)
         val title: String? = hot?.title;
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Image(
-                painter = painterResource(id = R.drawable.icon_hot), contentDescription = "",
-                modifier = Modifier.padding(start = 10.dp)
-            )
-            Text(
-                text = "$title",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(start = 5.dp),
-                color = Color.Black
-            )
-        }
+        Titleview(R.drawable.icon_hot,title)
 
         hot?.let {
             LazyVerticalGrid(
@@ -99,6 +87,20 @@ private fun HotSmallTheaterScreenShow(
                     TheaterFaceItem(item)
                 }
             }
+            LazyColumn(
+                Modifier
+                    .fillMaxSize()
+            ) {
+                items(items = hot.list,
+                key = {
+                        theaterNodeItemBean->theaterNodeItemBean.id
+                }){
+                    theaterNodeItemBean->
+                    TheaterListItem(item = theaterNodeItemBean)
+                }
+                
+            }
+
         }
     }
 }
