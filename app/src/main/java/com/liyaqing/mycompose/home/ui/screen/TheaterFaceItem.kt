@@ -1,15 +1,19 @@
 package com.liyaqing.mycompose.home.ui.screen
 
-import android.util.Log
+import android.annotation.SuppressLint
+import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -25,18 +29,25 @@ import java.net.URLDecoder
  * @Date: Create in 3:29 下午 2022/10/14
  * @Description:
  */
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun TheaterFaceItem(item: TheaterNodeItemBean) {
-        ConstraintLayout() {
+        ConstraintLayout(
+            Modifier.wrapContentWidth()
+        ) {
+            val context  = LocalContext.current
+            var titleValue by remember { mutableStateOf(item.title) }
+
             val (image, title, subTitle) = createRefs()
-
             val model = URLDecoder.decode(item.cover, "utf-8")
-            Log.d("qing--", model);
             AsyncImage(
-
                 model = model,
                 contentDescription = null,
                 modifier = Modifier
+                    .clickable(true){
+                        titleValue="我是测试"
+                        Toast.makeText(context,"好看",Toast.LENGTH_LONG).show()
+                    }
                     .constrainAs(image) {
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
@@ -45,11 +56,11 @@ fun TheaterFaceItem(item: TheaterNodeItemBean) {
                     .size(98.dp, 117.dp)
                     .clip(RoundedCornerShape(6.dp)),
                 contentScale = ContentScale.Crop,
+
             )
 
-
             Text(
-                text = item.title,
+                text = titleValue,
                 fontSize = 14.sp,
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,
@@ -62,6 +73,9 @@ fun TheaterFaceItem(item: TheaterNodeItemBean) {
                         end.linkTo(image.end)
                         top.linkTo(image.bottom)
                         width = Dimension.fillToConstraints
+
+                    }
+                    .clickable {
 
                     }
             )

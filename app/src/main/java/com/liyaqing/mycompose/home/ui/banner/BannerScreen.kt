@@ -91,7 +91,7 @@ fun BannerScreen(
 //            .clickable(onClick = { onClick(list[pagerState.currentPage].linkUrl) })
             .fillMaxWidth()
             .height(150.dp)
-            .padding(20.dp, 5.dp, 20.dp, 0.dp),
+            .padding(0.dp, 5.dp, 0.dp, 0.dp),
 
         ) { page ->
         AsyncImage(

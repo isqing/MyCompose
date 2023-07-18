@@ -1,27 +1,18 @@
 package com.liyaqing.mycompose.home.ui.screen
 
-import android.util.Log
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.liyaqing.mycompose.R
 import com.liyaqing.mycompose.home.data.SmallTheaterViewModel
 import com.liyaqing.mycompose.home.data.bean.SmallTheaterBean
-import com.liyaqing.mycompose.home.data.bean.SmallTheaterBeanList
 import com.liyaqing.mycompose.home.ui.banner.BannerScreen
 import com.liyaqing.mycompose.home.ui.title.Titleview
 
@@ -31,31 +22,6 @@ import com.liyaqing.mycompose.home.ui.title.Titleview
  * @Description:
  */
 @Composable
-fun SmallTheaterScreen(
-    viewModel: SmallTheaterViewModel,
-
-    ) {
-    val hot = viewModel.hots.collectAsState().value
-    val banners = viewModel.bannerDatas.collectAsState(initial = null).value
-    Column(
-        Modifier
-            .fillMaxSize()
-
-    ) {
-
-        banners?.let {
-            BannerShow(banners = banners)
-        }
-
-        hot?.let {
-            HotSmallTheaterScreenShow(hot = hot)
-        }
-    }
-
-
-}
-
-@Composable
 private fun BannerShow(
     banners: List<SmallTheaterBean>,
     indicatorAlignment: Alignment = Alignment.BottomCenter,
@@ -64,43 +30,34 @@ private fun BannerShow(
         BannerScreen(banners, indicatorAlignment)
     }
 }
-
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun HotSmallTheaterScreenShow(
-    hot: SmallTheaterBeanList?
+fun SmallTheaterScreen(
+    viewModel: SmallTheaterViewModel
 ) {
-
-    Column(modifier = Modifier.padding(10.dp)) {
-        Log.d("qing==", "SmallTheaterScreenshow: " + hot?.title)
-        val title: String? = hot?.title;
-
-        Titleview(R.drawable.icon_hot,title)
-
-        hot?.let {
-            LazyVerticalGrid(
-                cells = GridCells.Fixed(3),
-                modifier = Modifier.padding(top = 10.dp)
-
-            ) {
-                items(it.list) { item ->
-                    TheaterFaceItem(item)
-                }
+    val hot = viewModel.hots.collectAsState().value
+    val banners = viewModel.bannerDatas.collectAsState(initial = null).value
+    LazyVerticalGrid( columns=  GridCells.Fixed(3),
+        contentPadding = PaddingValues(10.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp)){
+        item(span = { GridItemSpan(3) }) {
+            banners?.let {
+                BannerShow(banners = banners)
             }
-            LazyColumn(
-                Modifier
-                    .fillMaxSize()
-            ) {
-                items(items = hot.list,
-                key = {
-                        theaterNodeItemBean->theaterNodeItemBean.id
-                }){
-                    theaterNodeItemBean->
-                    TheaterListItem(item = theaterNodeItemBean)
-                }
-                
-            }
-
+        }
+        item(span = { GridItemSpan(3) }) {
+            val title: String? = hot?.title;
+            Titleview(R.drawable.icon_hot, title)
+        }
+        items(count = hot.list.size, span = { GridItemSpan(1) }) {
+            TheaterFaceItem(item = hot.list[it])
+        }
+        item(span = { GridItemSpan(3) }) {
+            val title: String? = hot?.title;
+            Titleview(R.drawable.icon_hot, title)
+        }
+        items(count = hot.list.size, span = { GridItemSpan(3) }) {
+            TheaterListItem(item = hot.list[it])
         }
     }
 }

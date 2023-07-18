@@ -16,11 +16,11 @@ class SmallTheaterRepository : BaseRepository() {
     suspend fun getSmallTheaterData(): SmallTheaterBeanList {
         val smallTheaterBeanList= Network.retrofit.create(SmallTheaterApi::class.java)
             .getSmallTheaterData()
-        return smallTheaterBeanList?.data;
+        return smallTheaterBeanList.data;
     }
     suspend fun getBannerData(): List<SmallTheaterBean> {
         val bannerList= Network.retrofit.create(SmallTheaterApi::class.java)
             .getBannerData()
-        return bannerList?.data;
+        return bannerList.data;
     }
 }
